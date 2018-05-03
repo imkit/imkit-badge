@@ -6,6 +6,13 @@ Badge Cache Sample
 npm test
 ```
 
+# Default Port
+3120
+```
+var port = normalizePort(process.env.PORT || '3120');
+app.set('port', port);
+```
+
 # Get all
 ```
 GET /
