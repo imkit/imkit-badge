@@ -2,11 +2,17 @@ var express = require('express');
 var router = express.Router();
 
 // clientId => { clientId: clientId, total: totalCount, source1: source1Count, source2: source2Count }
-var data = [];
+var data = {};
 
 /* GET all */
 router.get('/', function(req, res, next) {
-  res.json(data);
+  var list = [];
+  for (var prop in data) {
+    if (data.hasOwnProperty(prop)) {
+      list.push(data[prop]);
+    }
+  }
+  res.json(list);
 });
 
 /* GET by client id */

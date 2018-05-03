@@ -8,20 +8,6 @@ describe('Badge', function() {
     require('../bin/www');
   });
 
-  it('listAll', function(done){
-    request
-    .get('/')
-    .use(prefix)
-    .end(function(err, res){
-      assert.equal(200, res.statusCode);
-      console.log('res.body=', JSON.stringify(res.body, null, 2));
-      if (err) {
-        console.error(err);
-      }
-      done(err);
-    });
-  });
-
   it('post sourceOne 123', function(done){
     request
     .post('/test-client')
@@ -81,6 +67,20 @@ describe('Badge', function() {
         console.error(err);
       }
       assert.equal(123, res.body['total']);
+      done(err);
+    });
+  });
+
+  it('listAll', function(done){
+    request
+    .get('/')
+    .use(prefix)
+    .end(function(err, res){
+      assert.equal(200, res.statusCode);
+      console.log('res.body=', JSON.stringify(res.body, null, 2));
+      if (err) {
+        console.error(err);
+      }
       done(err);
     });
   });
