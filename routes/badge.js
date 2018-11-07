@@ -7,9 +7,29 @@ var data = {};
 /* GET all */
 router.get('/', function(req, res, next) {
   var list = [];
-  for (var prop in data) {
-    if (data.hasOwnProperty(prop)) {
-      list.push(data[prop]);
+  var clients = req.query.clientId
+  if (clients) {
+    console.log('clients=', clients);
+    if (!Array.isArray(clients)) {
+      clients = [clients];
+    }
+    for (var i = 0; i < clients.length; i++) {
+      var cid = clients[i];
+      var obj = data[cid];
+      if (!obj) {
+        obj = {
+          client: cid,
+          badge: 0,
+        }
+        data[cid] = obj;
+      }
+      list.push(obj);
+    }
+  } else {
+    for (var prop in data) {
+      if (data.hasOwnProperty(prop)) {
+        list.push(data[prop]);
+      }
     }
   }
   res.json(list);
