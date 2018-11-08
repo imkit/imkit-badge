@@ -35,6 +35,31 @@ router.get('/', function(req, res, next) {
   res.json(list);
 });
 
+/* Query a list of clients */
+router.post('/', function(req, res, next) {
+  var list = [];
+  var clients = req.body
+  if (!clients || !Array.isArray(clients)) {
+    res.status = 400;
+    res.end('request body is not a json array');
+    return;
+  }
+  console.log('clients=', clients);
+  for (var i = 0; i < clients.length; i++) {
+    var cid = clients[i];
+    var obj = data[cid];
+    if (!obj) {
+      obj = {
+        client: cid,
+        badge: 0,
+      }
+      data[cid] = obj;
+    }
+    list.push(obj);
+  }
+  res.json(list);
+});
+
 /* GET by client id */
 router.get('/:clientId', function(req, res, next) {
   var clientId = req.params['clientId'];
