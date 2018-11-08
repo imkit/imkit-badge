@@ -15,14 +15,7 @@ router.get('/', function(req, res, next) {
     }
     for (var i = 0; i < clients.length; i++) {
       var cid = clients[i];
-      var obj = data[cid];
-      if (!obj) {
-        obj = {
-          client: cid,
-          badge: 0,
-        }
-        data[cid] = obj;
-      }
+      var obj = getCache(cid);
       list.push(obj);
     }
   } else {
@@ -47,14 +40,7 @@ router.post('/', function(req, res, next) {
   console.log('clients=', clients);
   for (var i = 0; i < clients.length; i++) {
     var cid = clients[i];
-    var obj = data[cid];
-    if (!obj) {
-      obj = {
-        client: cid,
-        badge: 0,
-      }
-      data[cid] = obj;
-    }
+    var obj = getCache(cid);
     list.push(obj);
   }
   res.json(list);
@@ -63,13 +49,7 @@ router.post('/', function(req, res, next) {
 /* GET by client id */
 router.get('/:clientId', function(req, res, next) {
   var clientId = req.params['clientId'];
-  var obj = data[clientId];
-  if (!obj) {
-    obj = {
-      clientId: clientId,
-      total: 0,
-    }
-  }
+  var obj = getCache(clientId);
   res.json(obj);
 });
 
@@ -96,13 +76,7 @@ router.post('/:clientId', function(req, res, next) {
     }
   }
 
-  var obj = data[clientId];
-  if (!obj) {
-    obj = {
-      clientId: clientId,
-      total: 0,
-    }
-  }
+  var obj = getCache(clientId);
   obj[source] = count;
 
   var total = 0;
@@ -117,5 +91,23 @@ router.post('/:clientId', function(req, res, next) {
 
   res.json(obj);
 });
+
+function initObj(clientId) {
+  return {
+    clientId: clientId,
+    total: 0,
+    badge: 0,
+    imkit: 0,
+  }
+}
+
+function getCache(clientId) {
+  var obj = data[clientId];
+  if (!obj) {
+    obj = initObj(clientId);
+  }
+  data[clientId] = obj;
+  return obj;
+}
 
 module.exports = router;
