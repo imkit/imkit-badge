@@ -88,6 +88,7 @@ router.post('/:clientId', function(req, res, next) {
   obj['total'] = total;
 
   data[clientId] = obj;
+  console.log('source:', source, ', count:', count, ', total:', total);
 
   res.json(obj);
 });
